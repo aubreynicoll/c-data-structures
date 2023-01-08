@@ -10,7 +10,6 @@
 #include <stdio.h>  /* fprintf */
 #include <stdlib.h> /* malloc, realloc, free */
 #include <stdlib.h> /* exit */
-#include <string.h> /* memmove */
 
 /**
  * Declares a typedef'd vector and defines its methods for use in the current
@@ -85,8 +84,9 @@
 			NAME##_resize(this, new_capacity);                               \
 		}                                                                        \
                                                                                          \
-		memmove(&this->data[index + 1], &this->data[index],                      \
-			(this->size - index) * sizeof(T));                               \
+		for (size_t i = this->size; i > index; --i) {                            \
+			this->data[i] = this->data[i - 1];                               \
+		}                                                                        \
                                                                                          \
 		this->data[index] = value;                                               \
                                                                                          \
@@ -100,8 +100,9 @@
 			exit(EXIT_FAILURE);                                              \
 		}                                                                        \
                                                                                          \
-		memmove(&this->data[index], &this->data[index + 1],                      \
-			(this->size - index + 1) * sizeof(T));                           \
+		for (size_t i = index; i < this->size - 1; ++i) {                        \
+			this->data[i] = this->data[i + 1];                               \
+		}                                                                        \
                                                                                          \
 		--this->size;                                                            \
 	}                                                                                \
