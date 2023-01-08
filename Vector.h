@@ -24,22 +24,22 @@
 		T     *data;                                                             \
 	};                                                                               \
                                                                                          \
-	NAME *NAME##_new(size_t capacity);                                               \
-	void  NAME##_free(NAME *this);                                                   \
+	static NAME *NAME##_new(size_t capacity);                                        \
+	static void  NAME##_free(NAME *this);                                            \
                                                                                          \
-	T *NAME##_begin(NAME *this);                                                     \
-	T *NAME##_end(NAME *this);                                                       \
+	static T *NAME##_begin(NAME *this);                                              \
+	static T *NAME##_end(NAME *this);                                                \
                                                                                          \
-	T    NAME##_at(NAME *this, size_t index);                                        \
-	void NAME##_insert(NAME *this, size_t index, T value);                           \
-	void NAME##_remove(NAME *this, size_t index);                                    \
+	static T    NAME##_at(NAME *this, size_t index);                                 \
+	static void NAME##_insert(NAME *this, size_t index, T value);                    \
+	static void NAME##_remove(NAME *this, size_t index);                             \
                                                                                          \
-	void NAME##_push(NAME *this, T value);                                           \
-	T    NAME##_pop(NAME *this);                                                     \
+	static void NAME##_push(NAME *this, T value);                                    \
+	static T    NAME##_pop(NAME *this);                                              \
                                                                                          \
-	void NAME##_resize(NAME *this, size_t capacity);                                 \
+	static void NAME##_resize(NAME *this, size_t capacity);                          \
                                                                                          \
-	NAME *NAME##_new(size_t capacity) {                                              \
+	static NAME *NAME##_new(size_t capacity) {                                       \
 		T    *data = malloc(capacity * sizeof(T));                               \
 		NAME *v = malloc(sizeof(NAME));                                          \
                                                                                          \
@@ -53,16 +53,16 @@
 		return v;                                                                \
 	}                                                                                \
                                                                                          \
-	void NAME##_free(NAME *this) {                                                   \
+	static void NAME##_free(NAME *this) {                                            \
 		free(this->data);                                                        \
 		free(this);                                                              \
 	}                                                                                \
                                                                                          \
-	T *NAME##_begin(NAME *this) { return this->data; }                               \
+	static T *NAME##_begin(NAME *this) { return this->data; }                        \
                                                                                          \
-	T *NAME##_end(NAME *this) { return this->data + this->size; }                    \
+	static T *NAME##_end(NAME *this) { return this->data + this->size; }             \
                                                                                          \
-	T NAME##_at(NAME *this, size_t index) {                                          \
+	static T NAME##_at(NAME *this, size_t index) {                                   \
 		if (index >= this->size) {                                               \
 			fprintf(stderr,                                                  \
 				#NAME "_at(): out of bounds vector access\n");           \
@@ -72,7 +72,7 @@
 		return this->data[index];                                                \
 	}                                                                                \
                                                                                          \
-	void NAME##_insert(NAME *this, size_t index, T value) {                          \
+	static void NAME##_insert(NAME *this, size_t index, T value) {                   \
 		if (index > this->size) {                                                \
 			fprintf(stderr, #NAME                                            \
 				"_insert(): out of bounds vector access\n");             \
@@ -93,7 +93,7 @@
 		++this->size;                                                            \
 	}                                                                                \
                                                                                          \
-	void NAME##_remove(NAME *this, size_t index) {                                   \
+	static void NAME##_remove(NAME *this, size_t index) {                            \
 		if (index >= this->size) {                                               \
 			fprintf(stderr, #NAME                                            \
 				"_remove(): out of bounds vector access\n");             \
@@ -106,17 +106,17 @@
 		--this->size;                                                            \
 	}                                                                                \
                                                                                          \
-	void NAME##_push(NAME *this, T value) {                                          \
+	static void NAME##_push(NAME *this, T value) {                                   \
 		NAME##_insert(this, this->size, value);                                  \
 	}                                                                                \
                                                                                          \
-	T NAME##_pop(NAME *this) {                                                       \
+	static T NAME##_pop(NAME *this) {                                                \
 		T value = NAME##_at(this, this->size - 1);                               \
 		NAME##_remove(this, this->size - 1);                                     \
 		return value;                                                            \
 	}                                                                                \
                                                                                          \
-	void NAME##_resize(NAME *this, size_t capacity) {                                \
+	static void NAME##_resize(NAME *this, size_t capacity) {                         \
 		if (!capacity) {                                                         \
 			free(this->data);                                                \
 			this->data = NULL;                                               \
