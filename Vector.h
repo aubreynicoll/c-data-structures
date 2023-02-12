@@ -121,6 +121,7 @@
 		if (!capacity) {                                                         \
 			free(this->data);                                                \
 			this->data = NULL;                                               \
+			this->size = 0;                                                  \
 		} else {                                                                 \
 			this->data =                                                     \
 			    realloc(this->data, capacity * sizeof(T));                   \
@@ -130,6 +131,9 @@
 				    stderr, #NAME                                        \
 				    "_resize(): out of memory during resize operation"); \
 				exit(EXIT_FAILURE);                                      \
+			}                                                                \
+			if (capacity < this->size) {                                     \
+				this->size = capacity;                                   \
 			}                                                                \
 		}                                                                        \
                                                                                          \

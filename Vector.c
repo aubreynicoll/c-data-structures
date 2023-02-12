@@ -59,9 +59,40 @@ void push_pop_work(void) {
 	Vec_free(v);
 }
 
+void resize_works(void) {
+	Vec *v = Vec_new(0);
+
+	Vec_push(v, 1);
+	Vec_push(v, 2);
+	Vec_push(v, 3);
+
+	Vec_resize(v, 1);
+
+	assert(v->capacity == 1);
+	assert(v->size == 1);
+	assert(Vec_pop(v) == 1);
+
+	Vec_free(v);
+
+	v = Vec_new(0);
+
+	Vec_push(v, 1);
+	Vec_push(v, 2);
+	Vec_push(v, 3);
+
+	Vec_resize(v, 0);
+
+	assert(v->capacity == 0);
+	assert(v->size == 0);
+	assert(v->data == NULL);
+
+	Vec_free(v);
+}
+
 int main(void) {
 	new_works();
 	iterators_work();
 	accessors_mutators_work();
 	push_pop_work();
+	resize_works();
 }
