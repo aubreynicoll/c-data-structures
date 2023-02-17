@@ -2,7 +2,7 @@
  * Test suite for Vector.h
  */
 
-#include "Vector.h"
+#include "vector.h"
 
 #include <assert.h>
 
